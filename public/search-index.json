@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Introducción",
+    "href": "/",
+    "content": "Example Fumadocs Este es un ejemplo",
+    "section": "inicio"
+  },
+  {
+    "title": "Arquitectura",
+    "href": "/arquitectura",
+    "content": "Arquitectura Describe aquí la arquitectura de tu proyecto (capas, módulos, decisiones clave).",
+    "section": "arquitectura"
+  },
+  {
+    "title": "API",
+    "href": "/api",
+    "content": "API Esta sección se poblará automáticamente desde openapi.yaml o schema.graphql si existen.",
+    "section": "api"
+  },
+  {
+    "title": "Guías",
+    "href": "/guias",
+    "content": "Guías Agrega tutoriales paso a paso, snippets y mejores prácticas.",
+    "section": "guias"
+  },
+  {
+    "title": "Changelog",
+    "href": "/changelog",
+    "content": "Changelog Mantén un registro de cambios aquí (o será generado desde CHANGELOG.md).",
+    "section": "changelog"
+  }
+]
