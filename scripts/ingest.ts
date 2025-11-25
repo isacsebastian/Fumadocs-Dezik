@@ -129,12 +129,17 @@ async function generateNavigation(): Promise<Array<{ title: string; href: string
     const indexPath = path.join(dirPath, 'index.mdx')
     if (!fs.existsSync(indexPath)) continue
 
-    const indexContent = await fs.readFile(indexPath, 'utf8')
-    const parsed = matter(indexContent)
-    const title = (parsed.data?.title as string) || dir.replace(/^\d+-/, '').replace(/-/g, ' ')
-    const href = '/' + dir.replace(/^\d+-/, '')
+    // Generar título desde el nombre de la carpeta
+    const sectionName = dir.replace(/^\d+-/, '') // Remover prefijo numérico
+    const generatedTitle = sectionName
+      .replace(/[-_]/g, ' ') // Reemplazar guiones y guiones bajos con espacios
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Primera letra mayúscula
+      .join(' ')
 
-    nav.push({ title, href })
+    const href = '/' + sectionName
+
+    nav.push({ title: generatedTitle, href })
   }
 
   return nav
