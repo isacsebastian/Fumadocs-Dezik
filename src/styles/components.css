@@ -209,8 +209,17 @@ button:focus-visible,
 
 .content-article img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   background: var(--color-border);
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow var(--transition-duration) var(--transition-easing);
+}
+
+.content-article img:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .content-divider {

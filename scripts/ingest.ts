@@ -56,10 +56,17 @@ async function importFromSections() {
       const raw = await fs.readFile(mdPath, 'utf8')
 
       const parsed = matter(raw)
-      const title = parsed.data?.title || mdFile.replace(/\.(md|mdx)$/, '')
 
-      const frontmatter = { ...parsed.data, title }
-      const mdxContent = matter.stringify(parsed.content, frontmatter)
+      // Procesar rutas de imágenes - convertir a rutas públicas
+      let content = parsed.content
+      // Reemplazar rutas de imágenes relativas con rutas de /public/images
+      // Busca patrones como: ![alt](../folder/image.png) o ![alt](folder/image.png)
+      content = content.replace(/!\[([^\]]*)\]\((?!https?|\/)[^)]*\/([^/)]+)\)/g, '![$1](/images/$2)')
+      // También maneja rutas sin carpeta padre
+      content = content.replace(/!\[([^\]]*)\]\(([^/)]+\.[a-z]+)\)/g, '![$1](/images/$2)')
+
+      // Solo mantener frontmatter si existe, sin agregar title automático
+      const mdxContent = matter.stringify(content, parsed.data || {})
 
       const mdxFileName = mdFile.replace(/\.md$/, '.mdx')
       const mdxPath = path.join(sectionContentDir, mdxFileName)

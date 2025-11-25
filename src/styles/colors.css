@@ -8,6 +8,11 @@
   --color-text-muted: var(--color-gray-500);
   --color-border: rgba(0, 0, 0, 0.08);
 
+  /* Colores de marca - reemplazados por config.json */
+  --color-brand-primary: #3B82F6;
+  --color-brand-accent: #10B981;
+  --color-brand-hover: #F59E0B;
+
   --focus-outline: rgba(0, 0, 0, 0.6);
 
   --transition-duration: 0.3s;
