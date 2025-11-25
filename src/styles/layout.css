@@ -38,8 +38,8 @@ body {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 32px;
-  max-width: 1400px;
   margin-left: 300px;
+  padding: 48px 48px;
 }
 
 .page-brand {
@@ -60,7 +60,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding: 48px;
+  padding: 0;
 }
 
 .content-article {
