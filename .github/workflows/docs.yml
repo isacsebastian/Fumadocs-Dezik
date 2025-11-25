@@ -36,6 +36,7 @@ jobs:
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
+        if: ${{ secrets.VERCEL_TOKEN != '' }}
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
@@ -43,7 +44,8 @@ jobs:
           working-directory: .
         id: vercel
 
-      - name: Alias custom domain (optional via docs.config.json)
+      - name: Alias custom domain (optional)
+        if: ${{ secrets.VERCEL_TOKEN != '' && steps.vercel.outcome == 'success' }}
         run: |
           if [ -f docs.config.json ]; then
             DOMAIN=$(jq -r '.domain' docs.config.json)
