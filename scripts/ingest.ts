@@ -4,12 +4,25 @@ import { globbySync } from 'globby'
 import matter from 'gray-matter'
 
 const SRC = process.cwd()
-const CONTENT = path.join(SRC, 'src', 'content')
+const IMPORT_DIR = path.join(SRC, 'import')
+const CLIENTS_DIR = path.join(IMPORT_DIR, 'clientes')
+
+// Detectar cliente desde variable de entorno o usar el primero disponible
+const TARGET_CLIENT = process.env.CLIENT_NAME || getDefaultClient()
+
+const CONTENT = path.join(SRC, 'src', 'content', TARGET_CLIENT)
 const APP = path.join(SRC, 'src', 'app')
 const PUBLIC_DIR = path.join(SRC, 'public')
-const IMPORT_DIR = path.join(SRC, 'import')
-const SECTIONS_DIR = path.join(IMPORT_DIR, 'sections')
-const CONFIG_FILE = path.join(IMPORT_DIR, 'config.json')
+const SECTIONS_DIR = path.join(CLIENTS_DIR, TARGET_CLIENT, 'sections')
+const CONFIG_FILE = path.join(CLIENTS_DIR, TARGET_CLIENT, 'config.json')
+
+function getDefaultClient(): string {
+  if (!fs.existsSync(CLIENTS_DIR)) {
+    return 'default'
+  }
+  const clients = fs.readdirSync(CLIENTS_DIR)
+  return clients.length > 0 ? clients[0] : 'default'
+}
 
 type RouteMap = Map<string, string>
 type BrandConfig = {
@@ -30,7 +43,10 @@ async function readBrandConfig(): Promise<BrandConfig | null> {
 }
 
 async function importFromSections() {
-  if (!fs.existsSync(SECTIONS_DIR)) return
+  if (!fs.existsSync(SECTIONS_DIR)) {
+    console.log(`⚠️  No se encontraron secciones en: ${SECTIONS_DIR}`)
+    return
+  }
 
   const sectionDirs = await fs.readdir(SECTIONS_DIR)
   const sortedDirs = sectionDirs.sort()
@@ -72,7 +88,7 @@ async function importFromSections() {
       const mdxPath = path.join(sectionContentDir, mdxFileName)
 
       await fs.outputFile(mdxPath, mdxContent)
-      console.log(`• ${sectionName}/${mdFile} → src/content/${path.basename(sectionContentDir)}/${mdxFileName}`)
+      console.log(`• ${sectionName}/${mdFile} → src/content/${TARGET_CLIENT}/${path.basename(sectionContentDir)}/${mdxFileName}`)
     }
 
     sectionNumber += 10
@@ -105,7 +121,7 @@ async function generatePageFiles() {
     }
 
     const importName = indexFile ? 'Index' : mdxFiles.find(f => f.endsWith('.mdx') || f.endsWith('.md'))?.replace(/\.(mdx|md)$/, '')
-    const contentPath = `@/content/${dir}/${indexFile || ''}`
+    const contentPath = `@/content/${TARGET_CLIENT}/${dir}/${indexFile || ''}`
 
     const pageContent = `"use client";
 
@@ -203,9 +219,9 @@ async function buildRouteMap(): Promise<RouteMap> {
         : `/${rel.replace(/\/page\.tsx$/, '').replace(/\/index$/, '')}`
     const absolute = path.join(APP, rel)
     const source = await fs.readFile(absolute, 'utf8')
-    const importMatch = source.match(/from\s+["']@\/content\/([^"']+)["']/)
+    const importMatch = source.match(/from\s+["']@\/content\/([^"']+)\/([^"']+)["']/)
     if (!importMatch) continue
-    const contentPath = importMatch[1].replace(/^\.\//, '')
+    const contentPath = importMatch[2].replace(/^\.\//, '')
     const normalized = normaliseContentPath(contentPath)
     routeMap.set(normalized, route)
   }
@@ -251,13 +267,13 @@ async function buildSearchIndex(routeMap: RouteMap) {
 async function main() {
   await fs.ensureDir(CONTENT)
 
-  console.log('📦 Iniciando ingesta de contenido...\n')
+  console.log(`📦 Iniciando ingesta de contenido para cliente: ${TARGET_CLIENT}\n`)
 
   // Leer configuración de branding
   const brandConfig = await readBrandConfig()
 
-  // Importar secciones desde /import/sections
-  console.log('📂 Importando secciones desde /import/sections...')
+  // Importar secciones desde /import/clientes/{cliente}/sections
+  console.log('📂 Importando secciones...')
   await importFromSections()
 
   console.log('\n📄 Generando páginas automáticas...')
@@ -277,7 +293,7 @@ async function main() {
   const routes = await buildRouteMap()
   await buildSearchIndex(routes)
 
-  console.log('\n✅ ¡Ingesta completada!\n')
+  console.log('\n✅ ¡Ingesta completada para cliente: ' + TARGET_CLIENT + '!\n')
 }
 
 main().catch(e => { console.error(e); process.exit(1) })

@@ -14,9 +14,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
           cache: 'pnpm'
 
-      - run: corepack enable
       - run: pnpm install --frozen-lockfile
 
       - name: Ingest sources -> MDX
