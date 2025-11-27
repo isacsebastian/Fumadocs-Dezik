@@ -1,8 +1,8 @@
 import "@/styles/global.css";
 import type { ReactNode } from "react";
 import { nav } from "@/lib/nav";
-import Link from "next/link";
 import Search from "@/components/search";
+import LogoClient from "@/components/LogoClient";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -11,15 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="page-grid">
           <aside className="page-sidebar">
             <div className="page-brand">
-              <Link href="/" aria-label="Ir al inicio">
-                <img
-                  src="/logo.svg"
-                  alt="Logotipo"
-                  className="page-logo"
-                  width={140}
-                  height={48}
-                />
-              </Link>
+              <LogoClient />
             </div>
             <Search />
             <nav className="nav">

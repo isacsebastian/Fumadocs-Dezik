@@ -1,19 +1,17 @@
-# Bienvenido a Apple Docs
+# Bienvenido a Apple
 
-Esta es la documentación oficial de Apple Inc.
+Descubre el mundo de innovación de Apple. Desde dispositivos revolucionarios hasta experiencias transformadoras.
 
-## Primeros pasos
+## Nuestros Productos
 
-Apple es una empresa de tecnología líder en el mundo, conocida por sus productos innovadores.
+- **iPhone** - El smartphone más avanzado del mundo
+- **Mac** - Computadoras potentes para creativos y profesionales
+- **iPad** - La mejor tablet para trabajar y crear
+- **Apple Watch** - Tu salud y conectividad en la muñeca
+- **AirPods** - Audio de calidad superior sin cables
 
-## Productos principales
+## Por qué elegir Apple
 
-- iPhone
-- iPad
-- Mac
-- Apple Watch
-- AirPods
+Diseño elegante, tecnología avanzada y ecosistema integrado que funciona de manera perfecta en todos tus dispositivos.
 
-## Más información
-
-Consulta las otras secciones para obtener más detalles sobre nuestros productos y servicios.
+![iPhone Pro](iPhone-AP_070109070253.webp)
